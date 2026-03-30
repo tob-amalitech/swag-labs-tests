@@ -1,7 +1,9 @@
 package com.swaglabs.pages;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -55,7 +57,7 @@ public class CheckoutPage {
     }
 
     public void clickContinue() {
-        driver.findElement(continueButton).click();
+        jsClick(wait.until(ExpectedConditions.elementToBeClickable(continueButton)));
     }
 
     public String getOrderTotal() {
@@ -63,7 +65,8 @@ public class CheckoutPage {
     }
 
     public void clickFinish() {
-        wait.until(ExpectedConditions.elementToBeClickable(finishButton)).click();
+        jsClick(wait.until(ExpectedConditions.elementToBeClickable(finishButton)));
+        wait.until(ExpectedConditions.urlContains("checkout-complete"));
     }
 
     public String getConfirmationHeader() {
@@ -75,6 +78,11 @@ public class CheckoutPage {
     }
 
     public void clickBackHome() {
-        driver.findElement(backHomeButton).click();
+        jsClick(wait.until(ExpectedConditions.elementToBeClickable(backHomeButton)));
+        wait.until(ExpectedConditions.urlContains("inventory"));
+    }
+
+    private void jsClick(WebElement element) {
+        ((JavascriptExecutor) driver).executeScript("arguments[0].click();", element);
     }
 }

@@ -48,11 +48,15 @@ public class CartPage {
     public void removeFirstItem() {
         List<WebElement> buttons = wait.until(
                 ExpectedConditions.visibilityOfAllElementsLocatedBy(removeButtons));
-        buttons.get(0).click();
+        int beforeCount = driver.findElements(cartItems).size();
+        ((JavascriptExecutor) driver).executeScript("arguments[0].click();", buttons.get(0));
+        wait.until(ExpectedConditions.numberOfElementsToBeLessThan(cartItems, beforeCount));
     }
 
     public void proceedToCheckout() {
-        wait.until(ExpectedConditions.elementToBeClickable(checkoutButton)).click();
+        WebElement btn = wait.until(ExpectedConditions.elementToBeClickable(checkoutButton));
+        ((JavascriptExecutor) driver).executeScript("arguments[0].click();", btn);
+        wait.until(ExpectedConditions.urlContains("checkout-step-one"));
     }
 
     public void continueShopping() {
