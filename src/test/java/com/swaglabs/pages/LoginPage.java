@@ -47,6 +47,7 @@ public class LoginPage {
         enterUsername(username);
         enterPassword(password);
         clickLogin();
+        wait.until(ExpectedConditions.urlContains("inventory"));
     }
 
     public String getErrorMessage() {

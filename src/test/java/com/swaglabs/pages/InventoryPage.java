@@ -1,6 +1,7 @@
 package com.swaglabs.pages;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -38,17 +39,15 @@ public class InventoryPage {
     public void addFirstItemToCart() {
         List<WebElement> buttons = wait.until(
                 ExpectedConditions.visibilityOfAllElementsLocatedBy(addToCartButtons));
-        int beforeCount = buttons.size();
-        buttons.get(0).click();
-        wait.until(ExpectedConditions.numberOfElementsToBeLessThan(addToCartButtons, beforeCount));
+        jsClick(buttons.get(0));
+        wait.until(ExpectedConditions.numberOfElementsToBeLessThan(addToCartButtons, buttons.size()));
     }
 
     public void addItemToCartByIndex(int index) {
         List<WebElement> buttons = wait.until(
                 ExpectedConditions.visibilityOfAllElementsLocatedBy(addToCartButtons));
-        int beforeCount = buttons.size();
-        buttons.get(index).click();
-        wait.until(ExpectedConditions.numberOfElementsToBeLessThan(addToCartButtons, beforeCount));
+        jsClick(buttons.get(index));
+        wait.until(ExpectedConditions.numberOfElementsToBeLessThan(addToCartButtons, buttons.size()));
     }
 
     public String getCartCount() {
@@ -57,7 +56,12 @@ public class InventoryPage {
     }
 
     public void goToCart() {
-        wait.until(ExpectedConditions.elementToBeClickable(cartIcon)).click();
+        jsClick(wait.until(ExpectedConditions.elementToBeClickable(cartIcon)));
+        wait.until(ExpectedConditions.urlContains("cart"));
+    }
+
+    private void jsClick(WebElement element) {
+        ((JavascriptExecutor) driver).executeScript("arguments[0].click();", element);
     }
 
     public int getInventoryItemCount() {
