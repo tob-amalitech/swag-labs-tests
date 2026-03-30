@@ -38,13 +38,17 @@ public class InventoryPage {
     public void addFirstItemToCart() {
         List<WebElement> buttons = wait.until(
                 ExpectedConditions.visibilityOfAllElementsLocatedBy(addToCartButtons));
+        int beforeCount = buttons.size();
         buttons.get(0).click();
+        wait.until(ExpectedConditions.numberOfElementsToBeLessThan(addToCartButtons, beforeCount));
     }
 
     public void addItemToCartByIndex(int index) {
         List<WebElement> buttons = wait.until(
                 ExpectedConditions.visibilityOfAllElementsLocatedBy(addToCartButtons));
+        int beforeCount = buttons.size();
         buttons.get(index).click();
+        wait.until(ExpectedConditions.numberOfElementsToBeLessThan(addToCartButtons, beforeCount));
     }
 
     public String getCartCount() {
@@ -53,7 +57,7 @@ public class InventoryPage {
     }
 
     public void goToCart() {
-        driver.findElement(cartIcon).click();
+        wait.until(ExpectedConditions.elementToBeClickable(cartIcon)).click();
     }
 
     public int getInventoryItemCount() {
